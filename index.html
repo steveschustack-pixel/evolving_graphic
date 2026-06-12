@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<title>Webmaster Steve</title>
+<meta charset="UTF-8">
+<meta name="description" content="Home of Webmaster Steve">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+}
+canvas {border:#666 1px solid;background-color: #cccccc;}
+</style>
+
+<script>
+/*
+http://localhost/indexnew.html
+*/
+
+// need to create a menu in the html file to set mode
+var mode = 'evolve';
+//mode = 'auto';
+
+var loops = 0;
+var canvas;
+var ctx;
+var canvasWidth;
+var canvasHeight;
+points = new Array();
+
+function resize() {
+	// Set canvas dimensions to match the window
+	const border = 20;
+	canvas.width = window.innerWidth - border;
+	canvasWidth = canvas.width;
+	canvas.height = window.innerHeight - border;
+	canvasHeight = canvas.height;
+	ctx = canvas.getContext('2d');
+	ctx.save();
+	ctx.fillStyle = "rgba(200,200,200,1)";
+	ctx.fillRect (0, 0, canvasWidth, canvasHeight);
+	ctx.restore(); 
+}  
+
+function init() {
+	canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+
+	if ((mode == 'manual') || (mode == 'single'))
+		canvas.addEventListener('click', clickMouse, false);
+
+	// Listen for window resize events
+	window.addEventListener('resize', resize);
+	// Initial call to set size on page load
+	resize();
+
+	ctx.save();
+	ctx.fillStyle = "rgba(200,200,200,1)";
+	ctx.fillRect (0, 0, canvasWidth, canvasHeight);
+	ctx.restore(); 
+
+	draw(10, 10);
+}
+
+function draw(x,y){
+	canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+	ctx.save();
+	
+	
+	
+	if ((mode == 'single') || (mode == 'slideshow') || (mode == 'evolve')) {
+		// clear the screen
+		//ctx.fillStyle = "rgba(200,200,200,1)";
+		ctx.fillStyle = "rgba("+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+(1) +")";
+
+		ctx.fillRect (0, 0, canvasWidth, canvasHeight);
+	}
+	
+	//ctx.fillStyle = "rgba("+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+(Math.random() * 0.7 + 0.3) +")";
+	ctx.fillStyle = "rgba("+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+(Math.random() * 0.4 + 0.3) +")";
+	
+	///////////////////////////////////////////////////////////////
+	if (mode == 'evolve')  {
+		//@@@!here
+		var reps, pt;
+		
+
+		ctx.beginPath();
+		reps = (loops % 12) + 1;
+		if ((loops % 12) == 0) {
+			//alert('creating data');
+			// generate random data points to use
+			//for (pt = 0; pt < ((12 * 6) / 2); pt += 2) {
+			for (pt = 0; pt < 200; pt += 2) {
+				points[pt] = Math.floor((Math.random()*(canvasWidth)));
+				points[pt + 1] = Math.floor((Math.random()*(canvasHeight)));
+			}
+		}
+		pt = 0;
+		
+		var initX = points[0];	//was Math.floor((Math.random()*(canvasWidth)));
+		var initY = points[1];	//was Math.floor((Math.random()*(canvasHeight)));
+		ctx.moveTo(initX, initY);	// move to initial point
+
+		while (--reps >= 0) {
+			//alert("dbg: " + points[pt]+ ", " +points[pt + 1]+ ", " +points[pt + 2]+ ", " +points[pt + 3]+ ", " +points[pt + 4]+ ", " +points[pt + 5])
+			ctx.bezierCurveTo(points[pt], points[pt + 1], points[pt + 2], points[pt + 3], points[pt + 4], points[pt + 5]);
+			pt += 6;
+		}
+		ctx.bezierCurveTo(points[pt], points[pt + 1], points[pt + 2], points[pt + 3], initX, initY);
+
+
+		
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+
+	///////////////////////////////////////////////////////////////
+	} else if ((mode == 'single') || (mode == 'slideshow') || (Math.random() < 0.4)) {	// bezier curves
+
+		/* 
+		https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/bezierCurveTo
+		bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)		
+		*/
+		var reps;
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		reps = ((mode == 'single' || mode == 'slideshow') ? 9 : 6) * Math.random() + 2;
+		while (--reps > 0) {
+			ctx.bezierCurveTo(Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))));
+		}
+
+		ctx.bezierCurveTo(Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), x, y);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+
+	} else if (Math.random() < 0.4) { // ellipse
+		var rx = Math.random();
+		var ry = Math.random();
+		var radx = x + 0.8 * Math.floor((rx*(canvasWidth - x)));
+		var rady = y + 0.8 * Math.floor((ry*(canvasHeight) - y));
+		var radx2 = x - 0.8 * Math.floor((rx*(canvasWidth - x)));
+		var rady2 = y - 0.8 * Math.floor((ry*(canvasHeight) - y));
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.bezierCurveTo(x, rady, radx, rady, radx, y);
+		ctx.bezierCurveTo(radx, rady2, x, rady2, x, y);
+		ctx.fill();
+	} else if (Math.random() < 0.2) {	// rectangle
+		ctx.fillRect (x, y, Math.floor((Math.random()*(canvasWidth - x))), Math.floor((Math.random()*(canvasHeight) - y)));
+	} else {	// circle
+		ctx.beginPath();
+		ctx.arc(x, y, Math.floor((Math.random()*(canvasHeight - y))), 0, 2 * Math.PI);
+		ctx.fill();
+	}
+	ctx.restore(); 
+
+	x = Math.floor((Math.random()*canvasWidth));
+	y = Math.floor((Math.random()*canvasHeight));
+
+	if (mode == 'manual' || (mode == 'single')) {
+		//alert('manual mode');
+	} else {
+		// calculate the delay until the next drawing event based on the time, so that it changes and repeats over time.
+		if (++loops < 1000000000) {
+			const d = new Date();
+			//dly = (mode == 'slideshow') ? 4000 : Math.floor((Math.random()*500))+1000+ (d.getTime() % 500);
+			dly = ((mode == 'slideshow') || (mode == 'evolve')) ? 
+				2000 : 
+				Math.floor((Math.random()*500))+1000+ (d.getTime() % 500);
+			var loopTimer = setTimeout('draw('+x+','+y+')',dly);
+		} else {
+			ctx.save();
+			ctx.fillStyle = "rgba(200,200,200,1)";
+			ctx.fillRect (0, 0, canvasWidth, canvasHeight);
+			ctx.fillStyle = "rgba(0,0,0,1)";
+			ctx.font = "20px Arial";
+			ctx.fillText("Done. Reload the page to restart.", 10, 50);	
+			ctx.restore(); 
+		}
+	}
+}
+
+function clickMouse(e){
+	var x, y;
+	/*
+	x = Math.floor((Math.random()*canvasWidth));
+	y = Math.floor((Math.random()*canvasHeight));
+	*/
+    var offset = findOffset(canvas);   //get the offset of the canvas relative to the page
+    
+    x = e.pageX - offset.x;     //find the x position of the mouse
+	//fudge
+	if (x > 10)
+		x -=10;
+    y = e.pageY - offset.y;     //find the y position of the mouse
+	var loopTimer = setTimeout('draw('+x+','+y+')',10);
+}
+
+function findOffset(obj) {
+    var curX = curY = 0;
+    if (obj.offsetParent) {
+        do {
+            curX += obj.offsetLeft;
+            curY += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    return {x:curX,y:curY};
+    }
+}
+
+
+
+</script>
+</head>
+<body onload="init()">
+<canvas id="canvas" width="300" height="300"></canvas>
+<!--
+<h1>Webmaster Steve's Graphic Animation</h1><h2>Choose Mode<h2><a href=\"index.php?mode=auto\">Automated mode</a> Shapes appear by themselves</h2><h2><a href=\"index.php?mode=manual\">Manual mode</a> Click to draw a new shape on top of other shapes</h2><h2><a href=\"index.php?mode=single\">Single mode</a> Click to draw a new shape on an empty screen</h2><h2><a href=\"index.php?mode=slideshow\">Slideshow mode</a> Automated version of Single mode. No clicks needed.</h2><h2><a href=\"index.php?mode=evolve\">Evolve mode</a> Shape evolves. No clicks needed.</h2>
+<h2>Also See<h2>
+<h2><a href=\"cams.php\">Street Cams - Florida</a></h2>
+<h2><a href=\"weather.php\">Weather</a></h2>
+-->
+</body> </html>
+;
