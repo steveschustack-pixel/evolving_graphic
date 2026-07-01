@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang=en>
 <head>
-<title>Webmaster Steve</title>
+<title>Evolving Graphics by Webmaster Steve</title>
 <meta charset="UTF-8">
-<meta name="description" content="Home of Webmaster Steve">
+<meta name="description" content="Evolving Graphics by Webmaster Steve">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 html, body {
@@ -29,8 +29,13 @@ http://localhost/index.html
 */
 
 // need to create a menu in the html file to set mode
-var mode = 'evolve';
-//mode = 'auto';
+/*<h1>Webmaster Steve's Graphic Animation</h1><h2>Choose Mode<h2><a href=\"index.php?mode=auto\">Automated mode</a> Shapes appear by themselves</h2><h2><a href=\"index.php?mode=manual\">Manual mode</a> Click to draw a new shape on top of other shapes</h2><h2><a href=\"index.php?mode=single\">Single mode</a> Click to draw a new shape on an empty screen</h2><h2><a href=\"index.php?mode=slideshow\">Slideshow mode</a> Automated version of Single mode. No clicks needed.</h2><h2><a href=\"index.php?mode=evolve\">Evolve mode</a> Shape evolves. No clicks needed.</h2>
+*/
+
+var mode;
+do {
+mode = prompt("Choose mode: auto, manual, single, slideshow or evolve", "evolve");
+} while (mode != 'auto' && mode != 'manual' && mode != 'single' && mode != 'slideshow' && mode != 'evolve');
 
 var loops = 0;
 var canvas;
@@ -181,7 +186,7 @@ function draw(x,y){
 			const d = new Date();
 			//dly = (mode == 'slideshow') ? 4000 : Math.floor((Math.random()*500))+1000+ (d.getTime() % 500);
 			dly = ((mode == 'slideshow') || (mode == 'evolve')) ? 
-				2000 : 
+				2500 : 
 				Math.floor((Math.random()*500))+1000+ (d.getTime() % 500);
 			var loopTimer = setTimeout('draw('+x+','+y+')',dly);
 		} else {
