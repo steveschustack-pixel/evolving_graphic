@@ -39,17 +39,7 @@ canvas {border:#666 1px solid;background-color: #cccccc;}
 http://localhost/index.html
 */
 
-// need to create a menu in the html file to set mode
-/*<h1>Webmaster Steve's Graphic Animation</h1><h2>Choose Mode<h2><a href=\"index.php?mode=auto\">Automated mode</a> Shapes appear by themselves</h2><h2><a href=\"index.php?mode=manual\">Manual mode</a> Click to draw a new shape on top of other shapes</h2><h2><a href=\"index.php?mode=single\">Single mode</a> Click to draw a new shape on an empty screen</h2><h2><a href=\"index.php?mode=slideshow\">Slideshow mode</a> Automated version of Single mode. No clicks needed.</h2><h2><a href=\"index.php?mode=evolve\">Evolve mode</a> Shape evolves. No clicks needed.</h2>
-
-
-*/
-
 var mode;	// set by init()
-/*do {
-mode = prompt("Choose mode: auto, manual, single, slideshow or evolve", "evolve");
-} while (mode != 'auto' && mode != 'manual' && mode != 'single' && mode != 'slideshow' && mode != 'evolve');
-*/
 
 var loops = 0;
 var canvas;
@@ -76,14 +66,6 @@ function init(aMode) {
 	mode = aMode;
 	
 	// hide menu and show canvas
-	/*
-	// To hide the div completely
-document.getElementById('myDiv').style.display = 'none';
-
-// To display the div again
-document.getElementById('myDiv').style.display = 'block';
-
-	*/
 	document.getElementById('menu').style.display = 'none';
 	document.getElementById('candiv').style.display = 'block';
 
@@ -270,12 +252,11 @@ function findOffset(obj) {
 <h3><button onclick=init('evolve')>Evolve mode</button> Shape evolves. No clicks needed.</h3>
 <h2>Also See<h2>
 
-<h3><a href="https://steveschustack-pixel.github.io/cams\">Street Cams - Florida</a></h3>
-<h3><a href="https://steveschustack-pixel.github.io/weather\">Weather</a></h3>
+<h3><a href="https://steveschustack-pixel.github.io/cams">Street Cams - Florida</a></h3>
+<h3><a href="https://steveschustack-pixel.github.io/weather">Weather</a></h3>
 </div>
 
 <div id=candiv class=hidden>
 <canvas id="canvas" width="300" height="300"></canvas>
 </div>
 </body> </html>
-;
