@@ -18,7 +18,7 @@ html {
 body {
     display: table-cell;
     vertical-align: middle;
-	background-color: #333;
+	background-color: #222;
 }
 canvas {border:#666 1px solid;background-color: #cccccc;}
 
@@ -54,7 +54,7 @@ points = new Array();
 
 function resize() {
 	// Set canvas dimensions to match the window
-	const border = 20;
+	const border = 8;	// 20
 	canvas.width = window.innerWidth - border;
 	canvasWidth = canvas.width;
 	canvas.height = window.innerHeight - border;
@@ -112,6 +112,7 @@ function draw(x,y){
 	
 	///////////////////////////////////////////////////////////////
 	if (mode == 'evolve')  {
+		//@@@!here
 		var reps, pt;
 		
 
