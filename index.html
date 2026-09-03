@@ -138,12 +138,17 @@ function draw(x,y){
 		ctx.save();
 		if  (seconds  >= 14)
 			ctx.drawImage(img, 0 , 0, canvas.width, canvas.height);
-		else
-			ctx.drawImage(img, loops*0.4, 0, canvas.width - (1.4*loops), canvas.height - (loops*0.5), 0 , 0, canvas.width, canvas.height);
+		else {
+			//console.log("drawimage(" + loops*0.2 + ", 0, " + (canvas.width - (0.4*loops)) + ", " + (canvas.height - (loops*0.3)) + ", 0 , 0, " + canvas.width + ", "+ canvas.height);
+			zoomfact = ((1000 - loops) / 1000);
+			ctx.drawImage(img, 0, 10 * (1 - zoomfact), canvas.width * zoomfact, canvas.height * zoomfact, 0 , 0, canvas.width, canvas.height);
+			
+			//ctx.drawImage(img, loops*0.2, 0, canvas.width - (0.4*loops), canvas.height - (loops*0.3), 0 , 0, canvas.width, canvas.height);
+			
 			//ctx.drawImage(img, loops/3, 0, canvas.width - loops/3, canvas.height - loops, 0 , 0, canvas.width, canvas.height);
 			//ctx.drawImage(img, loops/2, 0, canvas.width - loops/2, canvas.height - loops, 0 , 0, canvas.width, canvas.height);
 			//ctx.drawImage(img, loops/2, 0, canvas.width, canvas.height, 0 , 0, canvas.width, canvas.height);
-		ctx.restore(); 
+		} ctx.restore(); 
 	
 	} else if (mode == 'evolve')  {
 		//@@@!here
