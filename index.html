@@ -117,7 +117,13 @@ function draw(x,y){
 		var imgid;
 		const seconds = Math.floor(Date.now() / 1000);
 		//if  (Math.random() < 0.3)
-		if  ((seconds % 4) < 1)
+		if  ((seconds % 31) < 4)
+			imgid = 6;
+		else if  ((seconds % 61) < 4)
+			imgid = 7;
+		else if  ((seconds % 91) < 4)
+			imgid = 8;
+		else if  ((seconds % 4) < 1)
 			imgid = 1;
 		else 
 			imgid = Math.floor((Math.random()*5)) + 1;
@@ -295,6 +301,9 @@ function findOffset(obj) {
 <img src="steeplefaceopen2.jpg" id=3 height=1>
 <img src="steeplefaceopen3.jpg" id=4 height=1>
 <img src="steeplefaceopen4.jpg" id=5 height=1>
+<img src="entrance-coney-island.jpg" id=6 height=1>
+<img src="steeplechase.jpg" id=7 height=1>
+<img src="wonder-wheel.jpg" id=8 height=1>
 </div>
 
 </body> </html>
