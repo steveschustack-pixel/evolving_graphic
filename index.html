@@ -139,7 +139,7 @@ function draw(x,y){
 		if  (seconds  >= 14)
 			ctx.drawImage(img, 0 , 0, canvas.width, canvas.height);
 		else
-			ctx.drawImage(img, loops/2, 0, canvas.width - loops, canvas.height - loops, 0 , 0, canvas.width, canvas.height);
+			ctx.drawImage(img, loops/2, 0, canvas.width - loops/2, canvas.height - loops, 0 , 0, canvas.width, canvas.height);
 		ctx.restore(); 
 	
 	} else if (mode == 'evolve')  {
