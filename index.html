@@ -114,8 +114,11 @@ function draw(x,y){
 	
 	///////////////////////////////////////////////////////////////
 	if (mode == 'face')  {
-		//var imgid = "" + ((loops % 5) + 1);
-		var imgid = Math.floor((Math.random()*5)) + 1;
+		var imgid;
+		if  (Math.random() < 0.3)
+			imgid = 1;
+		else 
+			imgid = Math.floor((Math.random()*5)) + 1;
 		//alert("load image " + imgid);
 		img = document.getElementById(imgid);
 
