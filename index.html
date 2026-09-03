@@ -54,10 +54,11 @@ points = new Array();
 
 function resize() {
 	// Set canvas dimensions to match the window
-	const border = 9;	// 20
-	canvas.width = window.innerWidth - border;
+	const hborder = 24;
+	const vborder = 12;
+	canvas.width = window.innerWidth - hborder;
 	canvasWidth = canvas.width;
-	canvas.height = window.innerHeight - border;
+	canvas.height = window.innerHeight - vborder;
 	canvasHeight = canvas.height;
 	ctx = canvas.getContext('2d');
 	ctx.save();
@@ -72,7 +73,8 @@ function init(aMode) {
 	// hide menu and show canvas
 	document.getElementById('menu').style.display = 'none';
 	document.getElementById('candiv').style.display = 'block';
-
+	if (mode == 'face')
+		document.getElementById('facediv').style.display = 'block';
 	canvas = document.getElementById('canvas');
 	ctx = canvas.getContext('2d');
 
@@ -97,13 +99,13 @@ function draw(x,y){
 	ctx = canvas.getContext('2d');
 	ctx.save();
 	
-	
-	
-	if ((mode == 'single') || (mode == 'slideshow') || (mode == 'evolve')) {
-		// clear the screen
-		//ctx.fillStyle = "rgba(200,200,200,1)";
+	if (mode == 'single') {
 		ctx.fillStyle = "rgba("+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+(1) +")";
 
+		ctx.fillRect (0, 0, canvasWidth, canvasHeight);
+	} else if  ((mode == 'slideshow')|| (mode == 'evolve')) {
+		//ctx.fillStyle = "rgba(0,0,0,1)";
+		ctx.fillStyle = "rgba("+Math.floor((Math.random()*128))+","+Math.floor((Math.random()*128))+","+Math.floor((Math.random()*128))+","+(1) +")";
 		ctx.fillRect (0, 0, canvasWidth, canvasHeight);
 	}
 	
@@ -111,7 +113,17 @@ function draw(x,y){
 	ctx.fillStyle = "rgba("+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+Math.floor((Math.random()*255))+","+(Math.random() * 0.4 + 0.3) +")";
 	
 	///////////////////////////////////////////////////////////////
-	if (mode == 'evolve')  {
+	if (mode == 'face')  {
+		//var imgid = "" + ((loops % 5) + 1);
+		var imgid = Math.floor((Math.random()*5)) + 1;
+		//alert("load image " + imgid);
+		img = document.getElementById(imgid);
+
+		ctx.save();
+		ctx.drawImage(img, 0 , 0, canvas.width, canvas.height);
+		ctx.restore(); 
+	
+	} else if (mode == 'evolve')  {
 		//@@@!here
 		var reps, pt;
 		
@@ -162,7 +174,10 @@ function draw(x,y){
 
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		reps = ((mode == 'single' || mode == 'slideshow') ? 9 : 6) * Math.random() + 2;
+		//reps = ((mode == 'single' || mode == 'slideshow') ? 9 : 6) * Math.random() + 2;
+		reps = ((mode == 'single' || mode == 'slideshow') ? 3 : 6) * Math.random() + 1;
+		
+		//alert("reps=" + reps);
 		while (--reps > 0) {
 			ctx.bezierCurveTo(Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))), Math.floor((Math.random()*(canvasWidth))), Math.floor((Math.random()*(canvasHeight))));
 		}
@@ -199,6 +214,9 @@ function draw(x,y){
 
 	if (mode == 'manual' || (mode == 'single')) {
 		//alert('manual mode');
+	} else if (mode == 'face') {
+		dly = Math.floor((Math.random()*200))+100;
+		var loopTimer = setTimeout('draw(1,1)',dly);
 	} else {
 		// calculate the delay until the next drawing event based on the time, so that it changes and repeats over time.
 		if (++loops < 1000000000) {
@@ -259,13 +277,19 @@ function findOffset(obj) {
 <h3><button onclick=init('single')>Single mode</button> Click to draw a new shape on an empty screen</h3>
 <h3><button onclick=init('slideshow')>Slideshow mode</button> Automated version of Single mode. No clicks needed.</h3>
 <h3><button onclick=init('evolve')>Evolve mode</button> Shape evolves. No clicks needed.</h3>
-<h2>Also See<h2>
-
-<h3><a href="https://steveschustack-pixel.github.io/cams">Street Cams - Florida</a></h3>
-<h3><a href="https://steveschustack-pixel.github.io/weather">Weather</a></h3>
+<h3><button onclick=init('face')>Funny Face mode</button> No clicks needed.</h3>
+<h2>Also See: <a href="https://steveschustack-pixel.github.io/cams">Street Cams - Florida</a> --- <a href="https://steveschustack-pixel.github.io/weather">Weather</a><h2>
 </div>
 
 <div id=candiv class=hidden>
 <canvas id="canvas" width="300" height="300"></canvas>
 </div>
+<div id=facediv class=hidden>
+<img src="steepleface.jpg" id=1>
+<img src="steeplefaceopen1.jpg" id=2>
+<img src="steeplefaceopen2.jpg" id=3>
+<img src="steeplefaceopen3.jpg" id=4>
+<img src="steeplefaceopen4.jpg" id =5>
+</div>
+
 </body> </html>
